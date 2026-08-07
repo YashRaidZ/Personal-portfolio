@@ -13,6 +13,36 @@ const CATEGORY_ICON: Record<ServiceCategory, React.ComponentType<{ className?: s
   automation: Workflow,
 };
 
+const CATEGORY_STYLE: Record<
+  ServiceCategory,
+  { text: string; bg: string; ring: string; check: string }
+> = {
+  minecraft: {
+    text: "text-accent-primary",
+    bg: "bg-accent-primary/10",
+    ring: "hover:border-accent-primary/30",
+    check: "text-accent-primary",
+  },
+  discord: {
+    text: "text-accent-secondary",
+    bg: "bg-accent-secondary/10",
+    ring: "hover:border-accent-secondary/30",
+    check: "text-accent-secondary",
+  },
+  web: {
+    text: "text-accent-orange",
+    bg: "bg-accent-orange/10",
+    ring: "hover:border-accent-orange/30",
+    check: "text-accent-orange",
+  },
+  automation: {
+    text: "text-accent-gold",
+    bg: "bg-accent-gold/10",
+    ring: "hover:border-accent-gold/30",
+    check: "text-accent-gold",
+  },
+};
+
 export function Services({ data }: { data: ServiceData[] }) {
   return (
     <SectionWrapper id="services" ariaLabel="Services" tone="secondary">
@@ -25,6 +55,7 @@ export function Services({ data }: { data: ServiceData[] }) {
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
         {data.map((service, i) => {
           const Icon = CATEGORY_ICON[service.category];
+          const style = CATEGORY_STYLE[service.category];
           return (
             <motion.article
               key={service.id}
@@ -32,9 +63,9 @@ export function Services({ data }: { data: ServiceData[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.55, delay: (i % 2) * 0.08 }}
-              className="glass-panel group relative overflow-hidden px-7 py-8 transition-colors hover:border-accent-primary/30"
+              className={`glass-panel group relative overflow-hidden px-7 py-8 transition-colors ${style.ring}`}
             >
-              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-accent-primary/10 text-accent-primary">
+              <div className={`mb-5 flex h-11 w-11 items-center justify-center rounded-xl ${style.bg} ${style.text}`}>
                 <Icon className="h-5 w-5" />
               </div>
               <h3 className="text-xl font-semibold text-text-primary">{service.title}</h3>
@@ -43,7 +74,7 @@ export function Services({ data }: { data: ServiceData[] }) {
               <ul className="mt-5 space-y-2">
                 {service.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-2 text-sm text-text-light">
-                    <Check className="h-3.5 w-3.5 shrink-0 text-accent-primary" />
+                    <Check className={`h-3.5 w-3.5 shrink-0 ${style.check}`} />
                     {feature}
                   </li>
                 ))}

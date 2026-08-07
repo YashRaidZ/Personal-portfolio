@@ -15,6 +15,13 @@ const ICONS: Record<AboutHighlight["icon"], React.ComponentType<{ className?: st
   shield: Shield,
 };
 
+const HIGHLIGHT_COLORS = [
+  "bg-accent-primary/10 text-accent-primary",
+  "bg-accent-secondary/10 text-accent-secondary",
+  "bg-accent-orange/10 text-accent-orange",
+  "bg-accent-gold/10 text-accent-gold",
+];
+
 export function About({ data }: { data: AboutContentData }) {
   return (
     <SectionWrapper id="about" ariaLabel="About">
@@ -40,6 +47,7 @@ export function About({ data }: { data: AboutContentData }) {
       <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {data.highlights.map((highlight, i) => {
           const Icon = ICONS[highlight.icon];
+          const color = HIGHLIGHT_COLORS[i % HIGHLIGHT_COLORS.length];
           return (
             <motion.div
               key={highlight.label}
@@ -49,7 +57,7 @@ export function About({ data }: { data: AboutContentData }) {
               transition={{ duration: 0.5, delay: i * 0.05 }}
               className="glass-panel flex items-center gap-3 px-5 py-4"
             >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary/10 text-accent-primary">
+              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${color}`}>
                 <Icon className="h-4.5 w-4.5" />
               </span>
               <span className="text-sm font-medium text-text-light">{highlight.label}</span>
