@@ -21,7 +21,7 @@ export function SectionWrapper({
       aria-label={ariaLabel}
       className={cn(
         "relative py-24",
-        tone === "secondary" && "bg-bg-secondary/40",
+        tone === "secondary" && "bg-bg-secondary/25 backdrop-blur-[2px]",
         className
       )}
     >

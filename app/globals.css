@@ -100,7 +100,20 @@ h4 {
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
-/* Thin ambient horizon-glow divider -- the signature element that      */
+/* Signature gradient text -- used sparingly on primary headings only,
+   so it reads as an accent rather than decoration overload. */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-text-primary) 0%,
+    var(--color-text-primary) 40%,
+    var(--color-accent-primary) 75%,
+    var(--color-accent-secondary) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 /* echoes the hero scene at section boundaries as you scroll.           */
 .horizon-divider {
   position: relative;

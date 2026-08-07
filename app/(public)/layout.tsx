@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
+import { AmbientBackground } from "@/components/shared/AmbientBackground";
+import { CursorGlow } from "@/components/shared/CursorGlow";
 import { heroContent, contactInfo, siteSettings } from "@/lib/queries/static-content";
 
 export default function PublicLayout({
@@ -15,6 +17,8 @@ export default function PublicLayout({
       >
         Skip to main content
       </a>
+      <AmbientBackground />
+      <CursorGlow />
       <Navbar developerName={heroContent.name} />
       <main id="main-content">{children}</main>
       <Footer contact={contactInfo} settings={siteSettings} />

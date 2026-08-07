@@ -39,6 +39,8 @@ export interface ServiceData {
   features: string[];
 }
 
+export type ProjectAccess = "opensource" | "paid" | "private";
+
 export interface ProjectData {
   id: string;
   slug: string;
@@ -49,6 +51,9 @@ export interface ProjectData {
   features: string[];
   githubUrl: string | null;
   liveDemoUrl: string | null;
+  /** opensource -> show source link; paid -> show a store/purchase link
+   *  and a "Paid" badge, no source; private -> no links, "Private" badge. */
+  access: ProjectAccess;
   isFeatured: boolean;
 }
 

@@ -30,9 +30,7 @@ const description =
 export const metadata: Metadata = {
   title: { default: title, template: "%s | Minecraft & Discord Developer" },
   description,
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-    : undefined,
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
     title,
     description,

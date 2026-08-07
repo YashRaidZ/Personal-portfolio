@@ -51,12 +51,19 @@ function lerpColor(hexA: string, hexB: string, t: number) {
 }
 
 function getSkyPhase(t: number) {
-  // t in [0,1). 4 keyframes -> find segment and local progress.
-  const segment = t * KEYFRAMES.length;
-  const i = Math.floor(segment) % KEYFRAMES.length;
+  // Normalize into [0,1) defensively -- guards against floating-point
+  // drift (e.g. t landing exactly on 1) ever producing an out-of-range
+  // index, which was the source of the "reading 'top' of undefined" crash.
+  const normalized = ((t % 1) + 1) % 1;
+  const segment = normalized * KEYFRAMES.length;
+  let i = Math.floor(segment);
+  if (i < 0) i = 0;
+  if (i >= KEYFRAMES.length) i = KEYFRAMES.length - 1;
   const next = (i + 1) % KEYFRAMES.length;
-  const localT = segment - Math.floor(segment);
-  return { from: KEYFRAMES[i]!, to: KEYFRAMES[next]!, localT };
+  const localT = segment - i;
+  const from = KEYFRAMES[i] ?? KEYFRAMES[0]!;
+  const to = KEYFRAMES[next] ?? KEYFRAMES[0]!;
+  return { from, to, localT };
 }
 
 export function HeroCanvas() {
@@ -265,7 +272,6 @@ export function HeroCanvas() {
       if (document.hidden) {
         cancelAnimationFrame(raf);
       } else {
-        start = performance.now() - (start ? 0 : 0);
         raf = requestAnimationFrame(frame);
       }
     };

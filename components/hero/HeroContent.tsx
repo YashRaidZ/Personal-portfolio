@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Mail } from "lucide-react";
 import type { HeroContentData } from "@/types/content";
@@ -33,7 +34,7 @@ export function HeroContent({ data }: { data: HeroContentData }) {
         variants={item}
         className="text-4xl font-semibold leading-[1.05] text-text-primary sm:text-5xl"
       >
-        {data.name}
+        <span className="text-gradient">{data.name}</span>
       </motion.h1>
 
       <motion.p variants={item} className="mt-4 max-w-md text-base leading-relaxed text-text-light">
@@ -41,13 +42,10 @@ export function HeroContent({ data }: { data: HeroContentData }) {
       </motion.p>
 
       <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
-        <a
-          href={data.primaryButtonLink}
-          className="group inline-flex items-center gap-2 rounded-full bg-accent-primary px-6 py-3 text-sm font-semibold text-bg-primary transition-transform hover:-translate-y-0.5"
-        >
+        <MagneticButton href={data.primaryButtonLink}>
           {data.primaryButtonText}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </a>
+        </MagneticButton>
         <a
           href={data.secondaryButtonLink}
           className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-white/30 hover:bg-white/5"
@@ -57,5 +55,38 @@ export function HeroContent({ data }: { data: HeroContentData }) {
         </a>
       </motion.div>
     </motion.div>
+  );
+}
+
+function MagneticButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  function onMouseMove(e: React.MouseEvent<HTMLAnchorElement>) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const relX = e.clientX - rect.left - rect.width / 2;
+    const relY = e.clientY - rect.top - rect.height / 2;
+    setOffset({ x: relX * 0.25, y: relY * 0.4 });
+  }
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      onMouseMove={onMouseMove}
+      onMouseLeave={() => setOffset({ x: 0, y: 0 })}
+      animate={{ x: offset.x, y: offset.y }}
+      transition={{ type: "spring", stiffness: 200, damping: 15, mass: 0.4 }}
+      className="group inline-flex items-center gap-2 rounded-full bg-accent-primary px-6 py-3 text-sm font-semibold text-bg-primary"
+    >
+      {children}
+    </motion.a>
   );
 }

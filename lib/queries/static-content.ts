@@ -116,8 +116,9 @@ export const projects: ProjectData[] = [
     thumbnailUrl: null,
     technologies: ["Next.js", "Supabase", "TypeScript", "Tailwind CSS"],
     features: ["Real-time messaging", "Role-based permissions", "Moderation tooling"],
-    githubUrl: "https://github.com",
+    githubUrl: null,
     liveDemoUrl: null,
+    access: "paid",
     isFeatured: true,
   },
   {
@@ -129,8 +130,9 @@ export const projects: ProjectData[] = [
     thumbnailUrl: null,
     technologies: ["Discord.js", "Node.js", "PostgreSQL"],
     features: ["Verification flow", "Ticket system", "Slash commands"],
-    githubUrl: "https://github.com",
+    githubUrl: null,
     liveDemoUrl: null,
+    access: "private",
     isFeatured: true,
   },
   {
@@ -141,8 +143,9 @@ export const projects: ProjectData[] = [
     thumbnailUrl: null,
     technologies: ["Next.js", "Stripe", "Supabase"],
     features: ["License key delivery", "Plugin versioning", "Customer dashboard"],
-    githubUrl: "https://github.com",
+    githubUrl: null,
     liveDemoUrl: null,
+    access: "paid",
     isFeatured: false,
   },
 ];
