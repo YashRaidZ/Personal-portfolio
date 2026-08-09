@@ -7,8 +7,16 @@ import type { Database } from "@/types/database";
  * shipped to the browser.
  */
 export function createClient() {
-  return createBrowserClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    throw new Error(
+      "NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are not set. " +
+        "Copy .env.example to .env.local, fill in your Supabase project's URL and anon key, " +
+        "and restart `npm run dev`."
+    );
+  }
+
+  return createBrowserClient<Database>(url, anonKey);
 }
