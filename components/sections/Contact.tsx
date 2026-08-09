@@ -8,10 +8,12 @@ import { Github, Mail, MessageCircle, Loader2, CheckCircle2 } from "lucide-react
 import { SectionWrapper } from "@/components/shared/SectionWrapper";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { contactMessageSchema, type ContactMessageInput } from "@/lib/validations/contact";
+import { submitContactMessageAction } from "@/lib/actions/contact-form";
 import type { ContactInfoData } from "@/types/content";
 
 export function Contact({ data }: { data: ContactInfoData }) {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -24,11 +26,15 @@ export function Contact({ data }: { data: ContactInfoData }) {
 
   async function onSubmit(values: ContactMessageInput) {
     setStatus("submitting");
-    // TODO(Phase 2): POST to /api/contact -> Server Action -> contact_messages table.
-    await new Promise((r) => setTimeout(r, 600));
-    void values;
-    setStatus("success");
-    reset();
+    setSubmitError(null);
+    const result = await submitContactMessageAction(values);
+    if (result.success) {
+      setStatus("success");
+      reset();
+    } else {
+      setStatus("error");
+      setSubmitError(result.error ?? "Couldn't send your message. Please try again.");
+    }
   }
 
   return (
@@ -150,6 +156,11 @@ export function Contact({ data }: { data: ContactInfoData }) {
             {status === "success" && <CheckCircle2 className="h-4 w-4" />}
             {status === "success" ? "Message sent" : "Send message"}
           </button>
+          {status === "error" && submitError && (
+            <p role="alert" className="text-xs text-red-400">
+              {submitError}
+            </p>
+          )}
         </motion.form>
       </div>
     </SectionWrapper>

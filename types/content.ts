@@ -99,3 +99,17 @@ export interface SiteSettingsData {
   footerText: string;
   copyrightText: string;
 }
+
+/**
+ * Mirrors the --color-accent-* / --motion-scale CSS custom properties
+ * declared under @theme in app/globals.css. Added in Phase 2 so
+ * <ThemeProvider> can override :root at runtime from the admin-edited row.
+ */
+export interface SiteThemeData {
+  accentPrimary: string;
+  accentSecondary: string;
+  accentGold: string;
+  accentOrange: string;
+  motionScale: number;
+  glassIntensity: number;
+}

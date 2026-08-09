@@ -7,19 +7,33 @@ import { Process } from "@/components/sections/Process";
 import { Stats } from "@/components/sections/Stats";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Contact } from "@/components/sections/Contact";
-import {
-  heroContent,
-  aboutContent,
-  services,
-  projects,
-  techCategories,
-  processSteps,
-  stats,
-  testimonials,
-  contactInfo,
-} from "@/lib/queries/static-content";
+import { getHeroContent } from "@/lib/queries/hero";
+import { getAboutContent } from "@/lib/queries/about";
+import { getServices } from "@/lib/queries/services";
+import { getProjects } from "@/lib/queries/projects";
+import { getTechCategories } from "@/lib/queries/tech-stack";
+import { getTestimonials } from "@/lib/queries/testimonials";
+import { getContactInfo } from "@/lib/queries/contact-info";
+// process_steps and stats stay static/code-defined for now -- see Phase 2
+// handoff notes: stats need a real GitHub API integration (Phase 3), and
+// the "how I work" process steps rarely change, so neither warranted a
+// full CMS domain in this phase.
+import { processSteps, stats } from "@/lib/queries/static-content";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const [heroContent, aboutContent, services, projects, techCategories, testimonials, contactInfo] =
+    await Promise.all([
+      getHeroContent(),
+      getAboutContent(),
+      getServices(),
+      getProjects(),
+      getTechCategories(),
+      getTestimonials(),
+      getContactInfo(),
+    ]);
+
   return (
     <>
       <Hero data={heroContent} />

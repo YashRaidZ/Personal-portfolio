@@ -2,13 +2,23 @@ import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
 import { AmbientBackground } from "@/components/shared/AmbientBackground";
 import { CursorGlow } from "@/components/shared/CursorGlow";
-import { heroContent, contactInfo, siteSettings } from "@/lib/queries/static-content";
+import { getHeroContent } from "@/lib/queries/hero";
+import { getContactInfo } from "@/lib/queries/contact-info";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 
-export default function PublicLayout({
+export const revalidate = 60;
+
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [heroContent, contactInfo, siteSettings] = await Promise.all([
+    getHeroContent(),
+    getContactInfo(),
+    getSiteSettings(),
+  ]);
+
   return (
     <>
       <a
